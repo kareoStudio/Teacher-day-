@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Teachers' Day - Sanila Chishti Ma'am</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #ff4757;
+      --gold: #d4af37;
+      --gold-dark: #aa7c11;
+      --accent: #2ed573;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #1b1435, #080614);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      color: #fff;
+      padding: 25px 0;
+    }
+
+    /* Background Ambient Canvas */
+    #bg-particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Foreground Confetti Canvas (Front layer) */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99999;
+    }
+
+    .main-wrapper {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+    }
+
+    /* =========================================
+       STAGE 0: CAKE & CANDLES
+       ========================================= */
+    .cake-stage {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(14px);
+      padding: 30px 20px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      transition: all 0.6s ease;
+    }
+
+    .cake-instructions {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f1f2f6;
+      margin-bottom: 30px;
+      min-height: 28px;
+    }
+
+    .cake-display-area {
+      position: relative;
+      width: 260px;
+      height: 190px;
+      margin: 0 auto 25px auto;
+    }
+
+    .cake-plate {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 250px;
+      height: 14px;
+      background: linear-gradient(90deg, #b8860b, #ffd700, #daa520, #ffd700, #b8860b);
+      border-radius: 50px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+      z-index: 1;
+    }
+
+    .cake-cut-wrapper {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 2;
+      transition: gap 0.5s ease;
+    }
+
+    .cake-half {
+      width: 105px;
+      height: 96px;
+      background: linear-gradient(180deg, #ff758c 0%, #ff5277 70%, #d8325a 100%);
+      position: relative;
+      overflow: visible;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+      transition: transform 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    .cake-half.left {
+      border-radius: 14px 0 0 8px;
+      border-right: 2px dashed rgba(255, 255, 255, 0.5);
+    }
+
+    .cake-half.right {
+      border-radius: 0 14px 8px 0;
+      border-left: 2px dashed rgba(255, 255, 255, 0.5);
+    }
+
+    .cut-active .cake-half.left { transform: translateX(-22px) rotate(-6deg); }
+    .cut-active .cake-half.right { transform: translateX(22px) rotate(6deg); }
+
+    .icing-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 26px;
+      background: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .cake-half.left .icing-layer { border-radius: 12px 0 0 0; }
+    .cake-half.right .icing-layer { border-radius: 0 12px 0 0; }
+
+    .drips {
+      position: absolute;
+      top: 24px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+    .drip { width: 12px; height: 14px; background: #ffffff; border-radius: 0 0 10px 10px; }
+    .drip.sm { height: 9px; width: 9px; }
+    .drip.lg { height: 18px; width: 14px; }
+
+    .sprinkle { position: absolute; width: 8px; height: 3px; border-radius: 2px; }
+    .sp-1 { top: 8px; left: 18px; background: #2ed573; transform: rotate(20deg); }
+    .sp-2 { top: 12px; left: 50px; background: #ffa502; transform: rotate(-30deg); }
+    .sp-3 { top: 8px; right: 25px; background: #1e90ff; transform: rotate(45deg); }
+    .sp-4 { top: 14px; right: 65px; background: #ff4757; transform: rotate(-15deg); }
+
+    .cherry {
+      position: absolute;
+      top: -10px;
+      width: 16px;
+      height: 16px;
+      background: radial-gradient(circle at 30% 30%, #ff6b81, #b33939);
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+    .ch-left { left: 16px; }
+    .ch-right { right: 16px; }
+
+    .bottom-crust {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: #574b90;
+      opacity: 0.35;
+    }
+
+    .candles-group {
+      position: absolute;
+      bottom: 104px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 32px;
+      z-index: 6;
+    }
+
+    .candle {
+      width: 12px;
+      height: 40px;
+      background: repeating-linear-gradient(45deg, #ff4757, #ff4757 6px, #ffffff 6px, #ffffff 12px);
+      border-radius: 4px 4px 2px 2px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.15s;
+    }
+
+    .candle:active { transform: scale(0.95); }
+
+    .candle::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 6px;
+      background: #333;
+    }
+
+    .flame {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 22px;
+      background: radial-gradient(circle, #fff700, #ff5e00 70%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 0 15px #ffa502, 0 0 25px #ff4757;
+      animation: flicker 0.6s infinite alternate ease-in-out;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+      100% { transform: translateX(-50%) scale(1.15) rotate(3deg); }
+    }
+
+    .flame.off {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.2);
+      pointer-events: none;
+    }
+
+    .knife-btn {
+      display: none;
+      background: linear-gradient(135deg, var(--gold), #f39c12);
+      border: none;
+      color: #1a1a1a;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(241, 196, 15, 0.4);
+      animation: pulseBtn 1.2s infinite;
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    /* =========================================
+       STAGE 1: ENVELOPE / SECRET MESSAGE
+       ========================================= */
+    .step-initial {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(14px);
+      padding: 40px 24px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      animation: floatBox 3s ease-in-out infinite alternate;
+      transition: all 0.5s ease;
+    }
+
+    @keyframes floatBox {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+
+    .gift-icon {
+      font-size: 70px;
+      cursor: pointer;
+      display: inline-block;
+      animation: pulseIcon 1.5s infinite;
+      transition: transform 0.2s ease;
+    }
+
+    .gift-icon:hover { transform: scale(1.15) rotate(6deg); }
+
+    @keyframes pulseIcon {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, var(--primary), #ff6b81);
+      border: none;
+      color: white;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+    }
+
+    /* =========================================
+       STAGE 2: GREETING & PROGRESSIVE MESSAGE
+       ========================================= */
+    .step-card {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 26px 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      animation: popIn 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(40px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .tag-badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    .heading-wish {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, #ffa502, #ff6b81, #70a1ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .teacher-name {
+      font-size: 1.25rem;
+      color: #f1f2f6;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .polaroid-frame {
+      background: #fff;
+      padding: 10px 10px 20px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transform: rotate(-2deg);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .polaroid-frame:hover { transform: rotate(0deg) scale(1.03); }
+
+    .polaroid-img {
+      width: 135px;
+      height: 135px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      background: #e2e8f0;
+    }
+
+    .polaroid-caption {
+      color: #333;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .chalkboard-box {
+      background: #0f241a;
+      border: 4px solid #8b5a2b;
+      border-radius: 12px;
+      padding: 16px 14px;
+      color: #f5f6fa;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      min-height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+      transition: opacity 0.2s ease;
+    }
+
+    .flow-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      color: #fff;
+      background: linear-gradient(135deg, #1e90ff, #70a1ff);
+      box-shadow: 0 6px 18px rgba(30, 144, 255, 0.35);
+    }
+
+    .flow-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(30, 144, 255, 0.5);
+    }
+
+    .flow-btn.cert-ready {
+      background: linear-gradient(135deg, #d4af37, #f39c12);
+      color: #1a1a1a;
+      font-size: 1rem;
+      font-weight: 800;
+      box-shadow: 0 8px 25px rgba(243, 156, 18, 0.45);
+      animation: pulseBtn 1.2s infinite;
+    }
+
+    /* =========================================
+       CERTIFICATE OVERLAY & LANDSCAPE PRINT
+       ========================================= */
+    .cert-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(6px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .cert-card-frame {
+      background: #fdfaf3;
+      width: 100%;
+      max-width: 680px;
+      padding: 12px;
+      border-radius: 4px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+      position: relative;
+      margin: auto;
+    }
+
+    .cert-outer-border {
+      border: 3px solid #aa7c11;
+      padding: 4px;
+      background: #fffefb;
+      position: relative;
+    }
+
+    .cert-inner-border {
+      border: 1px solid #c59b27;
+      padding: 24px 20px 20px;
+      position: relative;
+      background: radial-gradient(circle at center, #ffffff 60%, #fbf6ea 100%);
+      text-align: center;
+    }
+
+    .corner-decor {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: #aa7c11;
+      border-style: solid;
+      pointer-events: none;
+    }
+    .corner-tl { top: 6px; left: 6px; border-width: 3px 0 0 3px; }
+    .corner-tr { top: 6px; right: 6px; border-width: 3px 3px 0 0; }
+    .corner-bl { bottom: 6px; left: 6px; border-width: 0 0 3px 3px; }
+    .corner-br { bottom: 6px; right: 6px; border-width: 0 3px 3px 0; }
+
+    .cert-header {
+      font-family: 'Cinzel', serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .cert-sub-header {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #aa7c11;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .cert-presentation-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .cert-recipient-name-box {
+      width: 100%;
+      text-align: center;
+      margin: 4px 0 8px;
+    }
+
+    .cert-recipient-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: #aa7c11;
+      line-height: 1.1;
+      border-bottom: 1.5px solid #d4af37;
+      display: inline-block;
+      padding: 0 25px 4px;
+    }
+
+    .cert-reason {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #333;
+      max-width: 520px;
+      margin: 8px auto 20px auto;
+      text-align: center;
+    }
+
+    .cert-lower-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 10px;
+      padding: 0 15px;
+      width: 100%;
+    }
+
+    .sign-block {
+      text-align: center;
+      width: 140px;
+    }
+
+    .sign-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.45rem;
+      color: #1e272e;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .sign-line {
+      border-top: 1px solid #485460;
+      margin-bottom: 4px;
+      width: 100%;
+    }
+
+    .sign-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #57606f;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .medal-seal {
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(circle, #f9ca24, #b78103);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      border: 2px dashed #ffffff;
+      color: #fff;
+    }
+
+    .seal-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .btn-print-action {
+      background: #aa7c11;
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-close-action {
+      background: transparent;
+      border: 1px solid #aa7c11;
+      color: #aa7c11;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @page {
+      size: landscape;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body * { visibility: hidden !important; }
+
+      .cert-overlay, .cert-overlay * { visibility: visible !important; }
+
+      .cert-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: transparent !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        z-index: 999999 !important;
+      }
+
+      .cert-card-frame {
+        width: 92vw !important;
+        max-width: 950px !important;
+        box-shadow: none !important;
+        margin: auto !important;
+        padding: 10px !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .cert-inner-border {
+        text-align: center !important;
+        padding: 30px 25px 25px 25px !important;
+      }
+
+      .cert-header, .cert-sub-header, .cert-presentation-text, .cert-reason, .cert-recipient-name-box {
+        text-align: center !important;
+      }
+
+      .cert-actions { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Dust Canvas -->
+  <canvas id="bg-particle-canvas"></canvas>
+
+  <!-- Foreground (Front) Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="main-wrapper">
+
+    <!-- STAGE 0: CAKE & CANDLES -->
+    <div class="cake-stage" id="cakeStage">
+      <div class="cake-instructions" id="cakePrompt">🕯️ Tap each candle to blow it out!</div>
+      
+      <div class="cake-display-area">
+        <div class="cake-plate"></div>
+
+        <div class="candles-group">
+          <div class="candle" onclick="blowCandle(0, event)">
+            <div class="flame" id="flame-0"></div>
+          </div>
+          <div class="candle" onclick="blowCandle(1, event)">
+            <div class="flame" id="flame-1"></div>
+          </div>
+          <div class="candle" onclick="blowCandle(2, event)">
+            <div class="flame" id="flame-2"></div>
+          </div>
+        </div>
+
+        <div class="cake-cut-wrapper" id="cakeBase">
+          <div class="cake-half left">
+            <div class="icing-layer">
+              <div class="cherry ch-left"></div>
+              <div class="sprinkle sp-1"></div>
+              <div class="sprinkle sp-2"></div>
+            </div>
+            <div class="drips">
+              <div class="drip lg"></div>
+              <div class="drip sm"></div>
+              <div class="drip"></div>
+            </div>
+            <div class="bottom-crust"></div>
+          </div>
+
+          <div class="cake-half right">
+            <div class="icing-layer">
+              <div class="cherry ch-right"></div>
+              <div class="sprinkle sp-3"></div>
+              <div class="sprinkle sp-4"></div>
+            </div>
+            <div class="drips">
+              <div class="drip sm"></div>
+              <div class="drip lg"></div>
+              <div class="drip"></div>
+            </div>
+            <div class="bottom-crust"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="knife-btn" id="cutKnifeBtn" onclick="performCakeCut()">🔪 Cut The Cake!</button>
+    </div>
+
+    <!-- STAGE 1: ENVELOPE -->
+    <div class="step-initial" id="step1">
+      <div class="gift-icon" onclick="openGreeting()">💌</div>
+      <h2 style="margin-bottom: 8px; font-weight:700;">A Special Message Awaits</h2>
+      <p style="color: #cbd5e1; font-size: 0.95rem;">From your student Hashim</p>
+      <button class="btn-main" onclick="openGreeting()">Tap to Open ✨</button>
+    </div>
+
+    <!-- STAGE 2: GREETING & PROGRESSIVE MESSAGE FLOW -->
+    <div class="step-card" id="step2">
+      <span class="tag-badge">Computer Science Tribute</span>
+      <h1 class="heading-wish">Happy Teachers' Day!</h1>
+      <div class="teacher-name">To Our Respected Sanila Chishti Ma'am 🌟</div>
+
+      <!-- Polaroid Frame -->
+      <div class="polaroid-frame" onclick="document.getElementById('photoUpload').click()" title="Click to change photo">
+        <img id="teacherPhoto" class="polaroid-img" src="assets/1.png" alt="Sanila Chishti Ma'am" />
+        <div class="polaroid-caption">Best C Mentor 📷 </div>
+      </div>
+      <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="loadUserPhoto(event)" />
+
+      <!-- Blackboard -->
+      <div class="chalkboard-box" id="quoteBox"></div>
+
+      <!-- Next / Certificate Flow Button -->
+      <button class="flow-btn" id="flowActionBtn" onclick="handleFlowNext()">Next Message ➜</button>
+    </div>
+
+  </div>
+
+  <!-- CERTIFICATE POPUP -->
+  <div class="cert-overlay" id="certModal">
+    <div class="cert-card-frame">
+      <div class="cert-outer-border">
+        <div class="cert-inner-border">
+          
+          <div class="corner-decor corner-tl"></div>
+          <div class="corner-decor corner-tr"></div>
+          <div class="corner-decor corner-bl"></div>
+          <div class="corner-decor corner-br"></div>
+
+          <div class="cert-header">Certificate of Honor</div>
+          <div class="cert-sub-header">Distinction in C Programming & Mentorship</div>
+          
+          <div class="cert-presentation-text">This honorary citation is gratefully conferred upon</div>
+          
+          <div class="cert-recipient-name-box">
+            <div class="cert-recipient-name">Sanila Chishti Ma'am</div>
+          </div>
+          
+          <p class="cert-reason">
+            In sincere gratitude for simplifying the world of C Programming, variables, and logic. Thank you for patiently debugging our doubts, building our core fundamentals from scratch, and inspiring us to think like true programmers!
+          </p>
+
+          <div class="cert-lower-layout">
+            <div class="sign-block">
+              <div class="sign-script">Hashim</div>
+              <div class="sign-line"></div>
+              <div class="sign-label">Presented By</div>
+            </div>
+
+            <div class="medal-seal">
+              <div class="seal-text">OFFICIAL<br>★ SEAL ★<br>EXCELLENCE</div>
+            </div>
+
+            <div class="sign-block">
+              <div class="sign-script">September 2026</div>
+              <div class="sign-line"></div>
+              <div class="sign-label">Date Conferred</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="cert-actions">
+        <button class="btn-print-action" onclick="window.print()">🖨️ Save as PDF / Print</button>
+        <button class="btn-close-action" onclick="closeCertificate()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Cake State */
+    const candlesState = [true, true, true];
+
+    function blowCandle(index, e) {
+      if (!candlesState[index]) return;
+      candlesState[index] = false;
+      document.getElementById(`flame-${index}`).classList.add('off');
+      playPuffSound();
+
+      const remaining = candlesState.filter(Boolean).length;
+      const promptEl = document.getElementById('cakePrompt');
+
+      if (remaining > 0) {
+        promptEl.innerText = `Awesome! ${remaining} candle${remaining > 1 ? 's' : ''} left! 💨`;
+      } else {
+        promptEl.innerText = "All candles blown out! Cut the cake 🎂";
+        document.getElementById('cutKnifeBtn').style.display = 'inline-block';
+      }
+    }
+
+    function performCakeCut() {
+      document.getElementById('cakeBase').classList.add('cut-active');
+      document.getElementById('cutKnifeBtn').style.display = 'none';
+      document.getElementById('cakePrompt').innerText = "Happy Celebration! 🎉";
+      triggerConfettiBurst();
+
+      setTimeout(() => {
+        const cakeStage = document.getElementById('cakeStage');
+        const step1 = document.getElementById('step1');
+
+        cakeStage.style.opacity = '0';
+        cakeStage.style.transform = 'scale(0.8)';
+
+        setTimeout(() => {
+          cakeStage.style.display = 'none';
+          step1.style.display = 'block';
+          step1.style.opacity = '1';
+        }, 500);
+      }, 1400);
+    }
+
+    function playPuffSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.16);
+      } catch(e){}
+    }
+
+    /* 3 Specific C-Programming & Mentor Story Messages */
+    const storyMessages = [
+      "\"printf('Happy Teachers Day, Sanila Maam!\\n'); Thank you for lighting up our curiosity!\"",
+      "\"From clearing syntax errors to debugging our logic, thank you for making C Programming so simple and engaging!\"",
+      "\"Behind every successful line of code and confident student, there is an extraordinary mentor like you!\""
+    ];
+
+    let currentMsgStep = 0;
+
+    function typeText(elementId, text, speed = 25) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = "";
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          el.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, speed);
+    }
+
+    function openGreeting() {
+      const s1 = document.getElementById('step1');
+      const s2 = document.getElementById('step2');
+      s1.style.opacity = '0';
+      s1.style.transform = 'scale(0.85)';
+      setTimeout(() => {
+        s1.style.display = 'none';
+        s2.style.display = 'block';
+        typeText('quoteBox', storyMessages[0]);
+        triggerConfettiBurst();
+      }, 400);
+    }
+
+    function handleFlowNext() {
+      currentMsgStep++;
+
+      if (currentMsgStep < storyMessages.length) {
+        typeText('quoteBox', storyMessages[currentMsgStep]);
+        triggerConfettiBurst(); // Front Par Confetti Shower
+
+        if (currentMsgStep === storyMessages.length - 1) {
+          const btn = document.getElementById('flowActionBtn');
+          btn.innerText = "📜 View & Download Certificate";
+          btn.classList.add('cert-ready');
+        }
+      } else {
+        openCertificate();
+      }
+    }
+
+    function loadUserPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('teacherPhoto').src = e.target.result;
+          triggerConfettiBurst();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function openCertificate() {
+      document.getElementById('certModal').style.display = 'flex';
+      triggerConfettiBurst();
+    }
+
+    function closeCertificate() {
+      document.getElementById('certModal').style.display = 'none';
+    }
+
+    /* Dual Canvas Particle Engine */
+    const bgCanvas = document.getElementById('bg-particle-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    const frontCanvas = document.getElementById('confetti-canvas');
+    const frontCtx = frontCanvas.getContext('2d');
+
+    function resizeCanvases() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+      frontCanvas.width = window.innerWidth;
+      frontCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvases);
+    resizeCanvases();
+
+    // Background Subtle Dust
+    let bgParticles = [];
+    class BgDust {
+      constructor() {
+        this.x = Math.random() * bgCanvas.width;
+        this.y = Math.random() * bgCanvas.height;
+        this.size = Math.random() * 2.5 + 0.8;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = Math.random() * 0.5 + 0.2;
+        this.alpha = Math.random() * 0.35 + 0.1;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.y > bgCanvas.height) this.y = 0;
+        if (this.x > bgCanvas.width) this.x = 0;
+        if (this.x < 0) this.x = bgCanvas.width;
+      }
+      draw() {
+        bgCtx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        bgCtx.beginPath();
+        bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        bgCtx.fill();
+      }
+    }
+    for (let i = 0; i < 40; i++) bgParticles.push(new BgDust());
+
+    // Foreground Confetti Shower
+    let frontConfetti = [];
+    class FrontConfettiPiece {
+      constructor(x, y) {
+        this.x = x || frontCanvas.width / 2;
+        this.y = y || frontCanvas.height * 0.5;
+        this.size = Math.random() * 9 + 5;
+        this.speedX = (Math.random() - 0.5) * 16;
+        this.speedY = (Math.random() - 0.8) * 16;
+        this.colors = ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#ffffff', '#e056fd', '#ffd700'];
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        this.rot = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 12;
+        this.life = 135;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.speedY += 0.26;
+        this.rot += this.rotSpeed;
+        this.life--;
+      }
+      draw() {
+        frontCtx.save();
+        frontCtx.translate(this.x, this.y);
+        frontCtx.rotate((this.rot * Math.PI) / 180);
+        frontCtx.fillStyle = this.color;
+        frontCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.65);
+        frontCtx.restore();
+      }
+    }
+
+    function triggerConfettiBurst() {
+      const cx = frontCanvas.width / 2;
+      const cy = frontCanvas.height * 0.5;
+      for (let i = 0; i < 75; i++) {
+        frontConfetti.push(new FrontConfettiPiece(cx, cy));
+      }
+    }
+
+    function renderLoop() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      for (let p of bgParticles) {
+        p.update();
+        p.draw();
+      }
+
+      frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+      for (let i = frontConfetti.length - 1; i >= 0; i--) {
+        const cp = frontConfetti[i];
+        cp.update();
+        cp.draw();
+        if (cp.life <= 0 || cp.y > frontCanvas.height) {
+          frontConfetti.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(renderLoop);
+    }
+    renderLoop();
+  </script>
+</body>
+</html>
